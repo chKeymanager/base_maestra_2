@@ -1,0 +1,314 @@
+<!DOCTYPE html>
+<html dir="ltr" lang="en-US">
+
+<head>
+    <%- include('../partials/head'); %>
+        <!-- Document Title
+	============================================= -->
+        <title>Usuarios</title>
+        <script>
+            window.onpageshow = function () {
+                fetch('/validar')
+                    .then(result => result.json())
+                    .then(rs => {
+                        console.log(rs)
+                        var usuario = rs.usuario
+                        if (!usuario) {
+                            window.location = `/`
+                        }
+                    })
+                    .catch(error => {
+                        console.log("Error: ", error)
+                    })
+            }
+        </script>
+
+</head>
+
+<body class="stretched">
+
+    <!-- Document Wrapper
+	============================================= -->
+    <div id="wrapper" class="clearfix">
+
+        <!-- Top Bar
+		============================================= -->
+        <!-- #top-bar end -->
+
+        <!-- Header
+		============================================= -->
+        <%- include('../partials/header'); %>
+            <!-- #header end -->
+
+            <!-- Page Title
+        ============================================= -->
+            <section class="p-4">
+                <div class="container clearfix">
+                    <div class="row clearfix">
+                        <div class="col-lg-6 " style="display: flex; justify-content: flex-start; align-items: center;">
+                            <h3 class="titleStrongBlue">USUARIOS</h3>
+                        </div>
+                        <div class="col-lg-6" style="display: flex; justify-content: flex-end; align-items: center;">
+                            <button class="btn btn-primary btn-lg" data-bs-toggle="modal" data-bs-target="#myModal"
+                                style="background-color: #0C4899; "><i class="icon-line-user-plus"></i> Agregar
+                                Usuario</button>
+                        </div>
+                        <hr>
+                        <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+                            aria-hidden="true">
+                            <div class="modal-dialog">
+                                <form style="max-width: 35rem;" method="post" id="form-registrar">
+                                    <div class="modal-content">
+                                        <div class="modal-header"
+                                            style="background: #002c6c; color: white; border-bottom:solid 5px #EF7C10;">
+                                            <h4 class="modal-title" id="myModalLabel"
+                                                style="color: white; font-weight: bold;">Datos del Usuario</h4>
+                                            <button type="button" class="btn-close btn-light" data-bs-dismiss="modal"
+                                                aria-hidden="true"></button>
+                                        </div>
+                                        <div class="modal-body">
+                                            <div class="row">
+                                                <div class="form-group col-lg-6">
+                                                    <label for="nombre">Nombre</label>
+                                                    <input type="text" class="form-control" id="nombre" name="nombre" placeholder="Ingrese el nombre">
+                                                </div>
+                                                <div class="form-group col-lg-6">
+                                                    <label for="user">Nombre de usuario</label>
+                                                    <input type="text" class="form-control" id="usuario" name="usuario" placeholder="Ingrese el usuario">
+                                                </div>
+                                                <div class="form-group col-lg-6">
+                                                    <label for="rol">Rol</label>
+                                                    <select name="rol" id="rol" class="form-control">
+                                                        <option value="" selected disabled>Selecciona el rol
+                                                        </option>
+                                                        <option value="admin">Administrador</option>
+                                                        <option value="viewer">Usuario comun</option>
+                                                    </select>
+                                                </div>
+                                                <div class="form-group col-lg-6">
+                                                    <label for="pass">Contraseña</label>
+                                                    <input type="password" class="form-control" id="pass" name="pass" placeholder="Ingrese la contraseña">
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="modal-footer form-group"
+                                            style="border-top: transparent; background-color: #002c6c; margin-bottom: 0%;  border-top:solid 5px #EF7C10;"">
+                                            <button type="submit" class="btn"
+                                                style="background-color: #f26334; color: white;">Guardar</button>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section><!-- #page-title end -->
+            <section id="content">
+                <div class="content-wrap" style="padding-bottom: 20%;">
+                    <div class="container clearfix">
+                        <div id="message"></div>
+                        <div class="tabs clearfix" id="tab-3">
+                            <div class="tab-container">
+                                <div class="tab-content clearfix" id="tabs-9">
+                                    <!-- Content
+                                ============================================= -->
+                                    <div class="table-responsive">
+                                        <table id="datatableUsu" class="table table-striped table-bordered center"
+                                            cellspacing="0" width="100%">
+                                        <thead style=" background-color: #002c6c; color: white;" class="center">
+                                            <tr>
+                                                <th>Nombre</th>
+                                                <th>User name</th>
+                                                <th>Rol</th>
+                                                <th>Contraseña</th>
+                                                <th>OPCIONES</th>
+                                            </tr>
+                                            </thead>
+                                            <tfoot>
+                                                <tr style="background-color: #002c6c; color: white;" class="center">
+                                                    <th>Nombre</th>
+                                                    <th>User name</th>
+                                                    <th>Rol</th>
+                                                    <th>Contraseña</th>
+                                                    <th>OPCIONES</th>
+                                                </tr>
+                                            </tfoot>
+                                            <tbody class="center">
+                                            </tbody>
+                                        </table>
+                                    </div><!-- #content end -->
+                                </div>
+                            </div>
+                        </div>
+                        <!-- Modal -->
+                        <div class="modal fade" id="usuarioEditar" tabindex="-1" role="dialog"
+                            aria-labelledby="myModalLabel" aria-hidden="true">
+                            <div class="modal-dialog">
+                                <form style="max-width: 35rem;" method="post" id="form-actualizar">
+                                    <div class="modal-content">
+                                        <div class="modal-header"
+                                            style="background: #002c6c; color: white; border-bottom:solid 5px #EF7C10;">
+                                            <h4 class="modal-title" id="myModalLabel"
+                                                style="color: white; font-weight: bold;">Editar Usuario</h4>
+                                            <button type="button" class="btn-close btn-light" data-bs-dismiss="modal"
+                                                aria-hidden="true"></button>
+                                        </div>
+                                        <div class="modal-body">
+                                            <div class="row">
+                                                <div class="form-group col-lg-6">
+                                                    <label for="nombreE">Nombre</label>
+                                                    <input type="text" class="form-control" id="nombreE" name="nombreE" placeholder="Ingrese el nombre">
+                                                </div>
+                                                <div class="form-group col-lg-6">
+                                                    <label for="usuarioE">Nombre de usuario</label>
+                                                    <input type="text" class="form-control" id="usuarioE" name="usuarioE" placeholder="Ingrese el usuario">
+                                                </div>
+                                                <div class="form-group col-lg-6">
+                                                    <label for="rolE">Rol</label>
+                                                    <select name="rolE" id="rolE" class="form-control">
+                                                        <option value="" selected disabled>Selecciona el rol
+                                                        </option>
+                                                        <option value="admin">Administrador</option>
+                                                        <option value="viewer">Usuario comun</option>
+                                                    </select>
+                                                </div>
+                                                <div class="form-group col-lg-6">
+                                                    <label for="passE">Contraseña</label>
+                                                    <input type="text" class="form-control" id="passE" name="passE" placeholder="Ingrese la contraseña">
+                                                </div>
+                                                <input type="hidden" value="" name="idux" id="idux">
+                                            </div>
+                                        </div>
+                                        <div class="modal-footer form-group"
+                                            style="border-top: transparent; background-color: #002c6c; margin-bottom: 0%;  border-top:solid 5px #EF7C10;">
+                                            <button type="button" class="btn" data-bs-dismiss="modal"
+                                                style="background-color: rgba(255, 0, 0, 0.514); color: white;">Cerrar</button>
+                                            <input type="submit" class="btn"
+                                                style="background-color: #f26334; color: white;" value="Guardar" />
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                            <div>
+                            </div>
+                        </div>
+                        <!--End Modal -->
+                    </div>
+                </div>
+            </section>
+
+            <!-- Footer
+		============================================= -->
+            <%- include('../partials/footer'); %>
+                <!-- #footer end -->
+
+    </div><!-- #wrapper end -->
+
+    <!-- JavaScripts
+    ============================================= -->
+    <script src="js/jquery.js"></script>
+    <script src="js/plugins.min.js"></script>
+    <!-- Bootstrap Data Table Plugin -->
+    <script src="js/components/bs-datatable.js"></script>
+    <!-- Footer Scripts
+    ============================================= -->
+    <script src="js/functions.js"></script>
+    <!-- Pintar tabla--->
+    <script>
+        $(document).ready(function () {
+            $('#datatableUsu').dataTable({
+                ajax: {
+                    url: "/tableUsuarios",
+                    dataSrc: "",
+                }
+            });
+        });
+        /*Pintar tabla*/
+        /* Traer Campos y se muestre en el modal */
+        $(document).on('click', '.modal-id-act-u', function (e) {
+            $("#idux").val($(this).attr('idux'));
+        });
+        $(document).on('click', '.modal-id-act-u', function (e) {
+            $("#nombreE").val($(this).attr('actax'));
+        });
+        $(document).on('click', '.modal-id-act-u', function (e) {
+            $("#usuarioE").val($(this).attr('idusx'));
+        });
+        $(document).on('click', '.modal-id-act-u', function (e) {
+            $("#rolE").val($(this).attr('llux'));
+        });
+        $(document).on('click', '.modal-id-act-u', function (e) {
+            $("#passE").val($(this).attr('coux'));
+        });
+        /* Traer Campos y se muestre en el modal */
+        /* Registrar */
+        $("#form-registrar").submit(function (e) {
+            e.preventDefault();
+            data = {
+                'nombre': $("#nombre").val(),
+                'usuario': $("#usuario").val(),
+                'rol': $("#rol").val(),
+                'pass': $("#pass").val()
+            }
+            let decide = confirm("¿Esta seguro de que desea Registrar?")
+            if (decide) {
+                $.post('/registrarU', data, function (rs, res) {
+                    if (rs.status) {
+                        alert("Datos Registrados Correctamente!");
+                        location.reload();
+                    }
+                    else alert("Ocurrio un error al Registrar los datos!");
+                });
+            }
+        });
+        /* Registrar */
+        /* Actualizar */
+        $("#form-actualizar").submit(function (e) {
+            e.preventDefault();
+            data = {
+                'id':$("#idux").val(),
+                'nombre': $("#nombreE").val(),
+                'usuario': $("#usuarioE").val(),
+                'rol': $("#rolE").val(),
+                'pass': $("#passE").val()
+            }
+            console.log(data)
+            let decide = confirm("¿Esta seguro de que desea actualizar?")
+            if (decide) {
+                $.post('/actualizarU', data, function (rs, res) {
+                    if (rs.status) {
+                        alert("Datos Actualizados Correctamente!");
+                        location.reload();
+                    }
+                    else alert("Ocurrio un error al actualizar los datos!");
+                });
+            }
+        });
+        /* Actualizar */
+        /* Eliminar */
+        $(document).on('click', '.delete', (e) => {
+            const id = e.target.attributes[1]['nodeValue'];
+            if (confirm("Estas seguro de eliminar este usuario?")) {
+                $.ajax({
+                    url: '/eliminarU',
+                    method: "POST",
+                    data: { action: 'delete', idux: id },
+                    dataType: "JSON",
+                    success: function (data) {
+                        $('#message').html('<div class="alert icon-thumbs-up alert-success">' + data.mensaje + '</div>');
+                        setTimeout(function () {
+                            $('#message').html('');
+                            location.reload();
+                        }, 2500);
+                    }
+                });
+            }
+        });
+    /*Eliminar */
+    </script>
+
+
+
+</body>
+
+</html>
