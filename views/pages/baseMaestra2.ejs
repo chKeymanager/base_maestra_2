@@ -144,7 +144,10 @@
 														<select class="selectpicker" name="ramo_i" id="ramo_i" multiple>
 															<option value="M0">M0</option>
 															<option value="M1">M1</option>
+															<option value="M2">M2</option>
+															<option value="M3">M3</option>
 															<option value="M4">M4</option>
+															<option value="M5">M5</option>
 															<option value="M6">M6</option>
 															<option value="M7">M7</option>
 															<option value="M8">M8</option>
@@ -326,7 +329,7 @@
 										</div>
 									</div>
 									<div class="center" >
-										<button id="boton" class="button button-large button-circle button-3d botonAgregar" style="background-color: #F26335 !important; color: white;"><i class="icon-line2-magnifier"></i> Consultar Tabla <i class="icon-table1"></i></button>
+										<button id="submit" class="button button-large button-circle button-3d submit_btn" style="background-color: #F26335 !important; color: white;"><i class="icon-line2-magnifier"></i> Consultar Tabla <i class="icon-table1"></i></button>
 									</div> 
 								</div>
 							</div>
@@ -437,100 +440,56 @@
 	============================================= -->
 	<script src="js/functions.js"></script>
 	<script>
-		let filepathCSV ='',nombreArchivo=''
-		document.getElementById("tablas").style.display="block";
-
-		
-		
-		//Carga los datos de la pagina en la url para pintar la consulta en la tabla
-		$(document).ready(function () {
-			$('#datatable1').dataTable({
-				ajax: {
-					url: "/data",
-					dataSrc:"",
-				}
-			});
-		});
-			//let api = datatable.api();
-			
-			
-            function consultar(){
-				const preloader = $('#preloader1');
-    			preloader.show();
-                const uri =`/consultaBMEget2?area=${$('#area').val()}&puesto=${$('#puesto').val()}&estado_c=${$('#estado_c').val()}&sector=${$('#sector').val()}&giro=${$('#giro').val()}&region=${$('#region').val()}&ramo_i=${$('#ramo_i').val()}&tamano=${$('#tamano').val()}&industria=${$('#industria').val()}&segmento=${$('#segmento').val()}&estatus_g=${$('#estatus_g').val()}&estatus_cod=${$('#estatus_cod').val()}&estatus_cat=${$('#estatus_cat').val()}&estatus_l=${$('#estatus_l').val()}&entidad=${$('#entidad_f').val()}&nivel=${$('#nivel').val()}&estatus_men=${$('#estatus_men').val()}`;
-				fetch(uri)
-                .then(result=>result.json())
-                .then(rs =>{
-                    pagina=0
-                    datos=rs.datitos
-                    if(datos.length>0){
-                        filepathCSV = rs.filepathCSV
-						nombreArchivo =rs.nombreArchivo
-                        document.getElementById('siguiente').disabled = false;
-						document.getElementById('anterior').disabled = true;
-						document.getElementById('contPaginas').style.display=''
-						document.getElementById('download').disabled = false;
-						preloader.hide();
-						llenardt()
-                    }else{
-						document.getElementById('siguiente').disabled = true;
-						document.getElementById('anterior').disabled = true;
-						document.getElementById('download').disabled = true;
-						preloader.hide();
-						datatable.clear()
-						datatable.draw()
-					}
-					
-                })
-                .catch(error => {
-                    console.log("Error: ", error)
-                })
-            }
-			function llenardt(){
-				const preloader = $('#preloader1');
-    			preloader.show();
-				document.getElementById('contPaginas').innerHTML=`Pagina ${pagina+1} de ${datos.length}`
-				datatable.clear()
-				datatable.rows.add(datos[pagina])
-				datatable.draw()
-				preloader.hide();
+	//Carga los datos de la pagina en la url para pintar la consulta en la tabla
+	$(document).ready(function () {
+		$('#datatable1').dataTable({
+			ajax: {
+				url: "/data",
+				dataSrc:"",
 			}
+		});
+	});
 
-            //Redirige a la misma pagina mandando los datos de los filtros
-            $('#boton').on('click', function(e){
-                e.preventDefault();
-                consultar()                
-            })
-            $('#anterior').on('click', function(e){
-                e.preventDefault();
-                pagina--
-                if(pagina==0){
-                    document.getElementById('anterior').disabled = true;
-                }
-                document.getElementById('siguiente').disabled = false;
-                llenardt()
-            })
-            $('#siguiente').on('click', function(e){
-                e.preventDefault();
-                pagina++
-                if(pagina==(datos.length-1)){
-                    document.getElementById('siguiente').disabled = true;
-                }
-                document.getElementById('anterior').disabled = false;
-                llenardt()
-            })
-            //manda llamar la descarga con los datos del url
-            $('#download').on('click', function(e){
-                e.preventDefault();
-                window.location=`/download2?filepathCSV=${filepathCSV}&nombreArchivo=${nombreArchivo}`
-            })
-            $('#busqueda').on('keyup',function(e){
-				if(this.value != ''){
-					busqueda(this.value)
-				}
-            })
-                
-            
+	$('.submit_btn').on('click', function (e) {
+  		e.preventDefault();
+  		const selectedarea = Array.from($('#area option:checked')).map(option => option.value);
+		const selectedpuesto = Array.from($('#puesto option:checked')).map(option => option.value);
+		const selectedSector = Array.from(jQuery('#sector option:checked')).map(option => option.value);
+		const selectedRamos = Array.from(jQuery('#ramo_i option:checked')).map(option => option.value);
+
+		// Construir la URL de la solicitud AJAX con los filtros si están presentes
+		let uri = '/data';
+	  	const queryParams = [];
+
+		if (selectedarea.length > 0) {
+			queryParams.push(`area=${selectedarea.join(',')}`);
+		}
+		if (selectedpuesto.length > 0) {
+			queryParams.push(`puesto=${selectedpuesto.join(',')}`);
+		}
+		if (selectedSector.length > 0) {
+    		queryParams.push(`sector=${selectedSector.join(',')}`);
+  		}
+		  if (selectedRamos.length > 0) {
+    		queryParams.push(`ramo_i=${selectedRamos.join(',')}`);
+  		}
+		if (queryParams.length > 0) {
+			uri += `?${queryParams.join('&')}`;
+		}
+
+		console.log(uri); // Añade esta línea para verificar la URL
+
+		// Realizar la solicitud AJAX
+		fetch(uri)
+		.then(result => result.json())
+		.then(rs => {
+		$('#datatable1').DataTable().clear().rows.add(rs).draw();
+		})
+		.catch(error => {
+		console.log("Error: ", error)
+		});
+	})
+
 	</script>
 	
 	<script>

@@ -1,11 +1,53 @@
 const connection = require('../controllers/db');
 
 const query = async (req, res) => {
+
+//paginador
 const page = req.query.page || 1; // Página actual (por defecto: 1)
-const itemsPerPage = 100; // Número de elementos por página
+const itemsPerPage = 100000; // Número de elementos por página
 const offset = (page - 1) * itemsPerPage; // Calcular el índice de inicio
 
+//inicio de los filtros de contactos
+const selectedArea = req.query.area ? req.query.area.split(',') : []; // Convertir las opciones seleccionadas en un array
+const selectedPuesto = req.query.puesto ? req.query.puesto.split(',') : []; // Convertir las opciones seleccionadas en un array
+const selectedEstadoC = req.query.estado_c ? req.query.estado_c.split(',') : []; // Convertir las opciones seleccionadas en un array
+
+//inicio de los filtros de empresa
+const s = req.query.sector ? req.query.sector.split(',') : []; // Convertir las opciones seleccionadas en un array
+const ramo_industrial = req.query.ramo_i ? req.query.ramo_i.split(',') : []; // Convertir las opciones seleccionadas en un array
+
+
+const queryParams = [];
+
+//consulta
 let sqlQuery = "SELECT * FROM base_maestra";
+
+//Continuación de los filtros de contactos
+if (selectedArea.length > 0) {
+    const areaFilter = selectedArea.map(area => `area = '${area}'`).join(' OR ');
+    queryParams.push(` (${areaFilter})`);
+}
+if (selectedPuesto.length > 0) {
+    const puestoFilter = selectedPuesto.map(puesto => `puesto = '${puesto}'`).join(' OR ');
+    queryParams.push(` (${puestoFilter})`);
+}
+if (selectedEstadoC.length > 0) {
+    const estdocFilter = selectedEstadoC.map(estado_c => `estado = '${estado_c}'`).join(' OR ');
+    queryParams.push(` (${estdocFilter})`);
+}
+//Continuación de los filtros de empresas
+if (s.length > 0) {
+    const sectorFilter = s.map(sector => `sector = '${sector}'`).join(' OR ');
+    queryParams.push(` (${sectorFilter})`);
+}
+if (ramo_industrial.length > 0) {
+    const ramoFilter = ramo_industrial.map(ramo_i => `ramo_industrial = '${ramo_i}'`).join(' OR ');
+    queryParams.push(` (${ramoFilter})`);
+}
+
+if (queryParams.length > 0) {
+    sqlQuery += ` WHERE ${queryParams.join('AND')}`;
+}
 
 sqlQuery += ` LIMIT ${offset}, ${itemsPerPage}`;
 
@@ -13,6 +55,37 @@ console.log(sqlQuery);
 
 const ds = []
 const [row] = await connection.query(sqlQuery)
+
+// Mapeo de códigos de área a descripciones
+const areaMapping = {
+    'A000': 'Sin Area',
+    'A010': 'Administración',
+    'A020': 'Comercialización / ventas /Serv. A clientes',
+    'A030': 'Compras',
+    'A040': 'Distribución / Logística',
+    'A050': 'Finanzas',
+    'A060': 'Fiscal',
+    'A070': 'General',
+    'A080': 'Informatica Sistemas it/dp/ims',
+    'A090': 'Legal',
+    'A100': 'Mercadotecnia',
+    'A110': 'Operaciones / Producción',
+    'A120': 'Recursos Humanos / Capacitación'
+};
+
+// Mapeo de códigos de puestos a descripciones
+const puestoMapping = {
+    'P000': 'Sin puesto',
+    'P010': 'Presidencia / Dueño',
+    'P020': 'Director',
+    'P030': 'Gerente',
+    'P040': 'Jefe',
+    'P050': 'Empleado',
+    'P060': 'Consultor',
+    'P070': 'Catedrático',
+    'P080': 'Empleado',
+    'P090': 'Consejero',						
+};
 
 for (const i in row){
     
@@ -23,8 +96,8 @@ for (const i in row){
         row[i].A_Materno,
         row[i].num_contacto,
         row[i].correo_contacto,
-        row[i].puesto,
-        row[i].area,
+        puestoMapping[row[i].puesto],
+        areaMapping[row[i].area],
         row[i].estado,
         row[i].num_telefono,
         row[i].titulo,
