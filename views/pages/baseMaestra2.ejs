@@ -41,7 +41,7 @@
 			<div class="container clearfix">
 				<h1 class="azul"><i class="icon-database"></i> BASE MAESTRA</h2><br>
 				<ol class="breadcrumb">
-					<button id="download" class="button button-large button-circle button-3d botonAgregar" style="background-color: #016d3d !important; color: white;" disabled><i class="icon-download1"></i> Descargar Excel <i class="icon-file-excel"></i></button>
+					<button class="button button-large button-circle button-3d download-btn" style="background-color: #016d3d !important; color: white;"><i class="icon-download1"></i> Descargar Excel <i class="icon-file-excel"></i></button>
 				</ol>
 			</div>
 		</section><!-- #page-title end -->
@@ -439,6 +439,8 @@
 	<!-- Footer Scripts
 	============================================= -->
 	<script src="js/functions.js"></script>
+
+	<script src="js/xlsx.full.min.js"></script>
 	<script>
 	//Carga los datos de la pagina en la url para pintar la consulta en la tabla
 	$(document).ready(function () {
@@ -452,10 +454,23 @@
 
 	$('.submit_btn').on('click', function (e) {
   		e.preventDefault();
+		//contactos
   		const selectedarea = Array.from($('#area option:checked')).map(option => option.value);
 		const selectedpuesto = Array.from($('#puesto option:checked')).map(option => option.value);
+		const selectedEstado = Array.from($('#estado_c option:checked')).map(option => option.value);
+		//empresas
 		const selectedSector = Array.from(jQuery('#sector option:checked')).map(option => option.value);
 		const selectedRamos = Array.from(jQuery('#ramo_i option:checked')).map(option => option.value);
+		const selectedSegmento = Array.from(jQuery('#segmento option:checked')).map(option => option.value);
+		const selectedEstatusC = Array.from(jQuery('#estatus_cod option:checked')).map(option => option.value);
+		const selectedEstatusM = Array.from(jQuery('#estatus_men option:checked')).map(option => option.value);
+		const selectedGiros = Array.from(jQuery('#giro option:checked')).map(option => option.value);
+		const selectedEntidad = Array.from(jQuery('#entidad_f option:checked')).map(option => option.value);
+		const selectedTamanio = Array.from(jQuery('#tamano option:checked')).map(option => option.value);
+		const selectedEstatusG = Array.from(jQuery('#estatus_g option:checked')).map(option => option.value);
+		const selectedEstatusCat = Array.from(jQuery('#estatus_cat option:checked')).map(option => option.value);
+		const selectedregionN = Array.from(jQuery('#region option:checked')).map(option => option.value);
+		const selectedEstatusLei = Array.from(jQuery('#estatus_l option:checked')).map(option => option.value);
 
 		// Construir la URL de la solicitud AJAX con los filtros si están presentes
 		let uri = '/data';
@@ -467,12 +482,45 @@
 		if (selectedpuesto.length > 0) {
 			queryParams.push(`puesto=${selectedpuesto.join(',')}`);
 		}
+		if (selectedEstado.length > 0) {
+			queryParams.push(`estado_c=${selectedEstado.join(',')}`);
+		}
 		if (selectedSector.length > 0) {
     		queryParams.push(`sector=${selectedSector.join(',')}`);
   		}
-		  if (selectedRamos.length > 0) {
+		if (selectedRamos.length > 0) {
     		queryParams.push(`ramo_i=${selectedRamos.join(',')}`);
   		}
+		if (selectedSegmento.length > 0) {
+    		queryParams.push(`segmento=${selectedSegmento.join(',')}`);
+  		}
+		if (selectedEstatusC.length > 0) {
+    		queryParams.push(`estatus_cod=${selectedEstatusC.join(',')}`);
+  		}
+		if (selectedEstatusM.length > 0) {
+    		queryParams.push(`estatus_men=${selectedEstatusM.join(',')}`);
+  		}
+		if (selectedGiros.length > 0) {
+    		queryParams.push(`giro=${selectedGiros.join(',')}`);
+  		}
+		if (selectedEntidad.length > 0) {
+    		queryParams.push(`entidad_f=${selectedEntidad.join(',')}`);
+  		}
+		if (selectedTamanio.length > 0) {
+			queryParams.push(`tamano=${selectedTamanio.join(',')}`);
+		}
+		if (selectedEstatusG.length > 0) {
+			queryParams.push(`estatus_g=${selectedEstatusG.join(',')}`);
+		}
+		if (selectedEstatusCat.length > 0) {
+			queryParams.push(`estatus_cat=${selectedEstatusCat.join(',')}`);
+		}
+		if (selectedregionN.length > 0) {
+			queryParams.push(`region=${selectedregionN.join(',')}`);
+		}
+		if (selectedEstatusLei.length > 0) {
+			queryParams.push(`estatus_l=${selectedEstatusLei.join(',')}`);
+		}
 		if (queryParams.length > 0) {
 			uri += `?${queryParams.join('&')}`;
 		}
@@ -489,6 +537,26 @@
 		console.log("Error: ", error)
 		});
 	})
+
+	$('.download-btn').on('click', function (e) {
+		e.preventDefault();
+		const headers = ['numero_asociado','Nombre','A_Paterno','A_Materno','num_contacto','correo_contacto','puesto','area','estado','num_telefono','titulo','region_nielsen','entidad_federativa','colonia','municipio','direccion','sector','giro','razon_social','ramo_industrial','nivel','moda','salud','alimentos','financiero','retail','fabricante','cadena','catalogo','estandar','lei','bk_contactostatus','segmento','tamanio','estatus_mes'];
+		// Obtén los datos de la tabla DataTable
+		const table = $('#datatable1').DataTable();
+		const data = table.data().toArray();
+
+		const excelData = [headers, ...data];
+
+		// Crea un libro de Excel y una hoja de trabajo
+		const wb = XLSX.utils.book_new();
+		const ws = XLSX.utils.aoa_to_sheet(excelData);
+
+		// Agrega la hoja de trabajo al libro de Excel
+		XLSX.utils.book_append_sheet(wb, ws, 'Datos');
+
+		// Genera el archivo Excel y descárgalo
+		XLSX.writeFile(wb, 'BaseMaestra.xlsx');
+	});
 
 	</script>
 	
