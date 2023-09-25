@@ -24,9 +24,9 @@ const tam = req.query.tamano ? req.query.tamano.split(',') : []; // Convertir la
 const est_g = req.query.estatus_g ? req.query.estatus_g.split(',') : []; // Convertir las opciones seleccionadas en un array
 const estatus_cat = req.query.estatus_cat ? req.query.estatus_cat.split(',') : []; // Convertir las opciones seleccionadas en un array
 const region_N = req.query.region ? req.query.region.split(',') : []; // Convertir las opciones seleccionadas en un array
-// const indus = req.query.industria ? req.query.industria.split(',') : []; // Convertir las opciones seleccionadas en un array
+const indus = req.query.industria ? req.query.industria.split(',') : []; // Convertir las opciones seleccionadas en un array
 const lei = req.query.estatus_l ? req.query.estatus_l.split(',') : []; // Convertir las opciones seleccionadas en un array
-// const nivel = req.query.nivel ? req.query.nivel.split(',') : []; // Convertir las opciones seleccionadas en un array
+const nivel = req.query.nivel ? req.query.nivel.split(',') : []; // Convertir las opciones seleccionadas en un array
 
 const queryParams = [];
 
@@ -91,18 +91,19 @@ if (region_N.length > 0) {
     const regionFilter = region_N.map(region => `region_nielsen = '${region}'`).join(' OR ');
     queryParams.push(` (${regionFilter})`);
 }
-// if (indus.length > 0) {
-//     const indusFilter = indus.map(industria => `catalogo = '${estatus_cat}'`).join(' OR ');
-//     queryParams.push(` (${estatus_catFilter})`);
-// }
+if (indus.length > 0) {
+    const indusFilter = indus.map(industria => `${industria} = 1`).join(' OR ');
+    queryParams.push(` (${indusFilter})`);
+}
 if (lei.length > 0) {
     const leiFilter = lei.map(estatus_l => `lei = '${estatus_l}'`).join(' OR ');
     queryParams.push(` (${leiFilter})`);
 }
-// if (nivel.length > 0) {
-//     const nivelFilter = nivel.map(nivel => `catalogo = '${nivel}'`).join(' OR ');
-//     queryParams.push(` (${nivelFilter})`);
-// }
+
+if (nivel.length > 0) {
+    const nivelFilter = nivel.map(nivel => nivel === 'Otros' ? `nivel != '0' AND nivel != '1' AND nivel != '2' AND nivel != '3' AND nivel != '4' AND nivel != '5' AND nivel != '6' AND nivel != '7' AND nivel != '8' AND nivel != '9' AND nivel != '10' AND nivel != '11'` :  `nivel = '${nivel}'`).join(' OR ');
+    queryParams.push(` (${nivelFilter})`);
+}
 
 if (queryParams.length > 0) {
     sqlQuery += ` WHERE ${queryParams.join('AND')}`;
@@ -187,7 +188,7 @@ for (const i in row){
     ]);
 }
 res.send(ds)
-console.log(ds)
+  console.log(ds)
 
 }
 module.exports = { query };

@@ -292,13 +292,13 @@
 														</select>
 														<label>Industria:</label>
 														<select class="selectpicker" name="industria" id="industria" multiple>
-															<option value="Fabricante">Fabricante</option>
-															<option value="Moda">Moda</option>
-															<option value="Salud">Salud</option>
-															<option value="Financiero">Financiero</option>
-															<option value="Alimentos">Alimentos Fresco/Agro</option>
-															<option value="Retail">Retail</option>
-															<option value="Cadena">Cadena de suministro</option>
+															<option value="fabricante">Fabricante</option>
+															<option value="moda">Moda</option>
+															<option value="salud">Salud</option>
+															<option value="financiero">Financiero</option>
+															<option value="alimentos">Alimentos Fresco/Agro</option>
+															<option value="retail">Retail</option>
+															<option value="cadena">Cadena de suministro</option>
 														</select>
 														<label>Estatus LEI:</label>
 														<select class="selectpicker" name="estatus_l" id="estatus_l" multiple>
@@ -471,6 +471,8 @@
 		const selectedEstatusCat = Array.from(jQuery('#estatus_cat option:checked')).map(option => option.value);
 		const selectedregionN = Array.from(jQuery('#region option:checked')).map(option => option.value);
 		const selectedEstatusLei = Array.from(jQuery('#estatus_l option:checked')).map(option => option.value);
+		const selectedNivel = Array.from(jQuery('#nivel option:checked')).map(option => option.value);
+		const selectedIndustria = Array.from(jQuery('#industria option:checked')).map(option => option.value);
 
 		// Construir la URL de la solicitud AJAX con los filtros si están presentes
 		let uri = '/data';
@@ -520,6 +522,12 @@
 		}
 		if (selectedEstatusLei.length > 0) {
 			queryParams.push(`estatus_l=${selectedEstatusLei.join(',')}`);
+		}
+		if (selectedNivel.length > 0){
+			queryParams.push(`nivel=${selectedNivel.join(',')}`)
+		}
+		if (selectedIndustria.length > 0){
+			queryParams.push(`industria=${selectedIndustria.join(',')}`)
 		}
 		if (queryParams.length > 0) {
 			uri += `?${queryParams.join('&')}`;
