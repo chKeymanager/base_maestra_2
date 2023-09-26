@@ -342,7 +342,7 @@
 			<div class="container clearfix">
 				
 			<div class="content-wrap" style="padding-top: 3%;">
-				<div class="container_loader_ppal" id="preloader1" style="display: none;">
+				<div class="container_loader_ppal" id="preloader" style="display: none;">
 					<div class="loader_ppal"></div>
 				</div>
 				<div class="tab-container" >
@@ -535,14 +535,20 @@
 		}
 
 		console.log(uri); // Añade esta línea para verificar la URL
-
+		// Antes de realizar la solicitud AJAX, muestra el preloader
+		const preloader = $('#preloader');
+		preloader.show();
 		// Realizar la solicitud AJAX
 		fetch(uri)
 		.then(result => result.json())
 		.then(rs => {
-		$('#datatable1').DataTable().clear().rows.add(rs).draw();
+			// Oculta el preloader una vez que se haya completado la solicitud
+			preloader.hide();
+			$('#datatable1').DataTable().clear().rows.add(rs).draw();
 		})
 		.catch(error => {
+		// En caso de error, también se ocultara el preloader
+		preloader.hide();
 		console.log("Error: ", error)
 		});
 	})
