@@ -442,13 +442,20 @@
 
 	<script src="js/xlsx.full.min.js"></script>
 	<script>
+	// Muestra el preloader antes de inicializar el DataTable
+	const preloader = $('#preloader');
+	preloader.show();
 	//Carga los datos de la pagina en la url para pintar la consulta en la tabla
 	$(document).ready(function () {
 		$('#datatable1').dataTable({
 			ajax: {
 				url: "/data",
 				dataSrc:"",
-			}
+			},
+			initComplete: function () {
+            // Oculta el preloader una vez que se haya completado la carga inicial
+            preloader.hide();
+        }
 		});
 	});
 
