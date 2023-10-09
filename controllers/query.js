@@ -4,7 +4,7 @@ const query = async (req, res) => {
 
 //paginador
 const page = req.query.page || 1; // Página actual (por defecto: 1)
-const itemsPerPage = 100000; // Número de elementos por página
+const itemsPerPage = 150000; // Número de elementos por página
 const offset = (page - 1) * itemsPerPage; // Calcular el índice de inicio
 
 //inicio de los filtros de contactos
