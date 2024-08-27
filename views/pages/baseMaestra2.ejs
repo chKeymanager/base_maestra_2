@@ -39,10 +39,7 @@
 		============================================= -->
 		<section id="page-title" class="page-title-pattern">
 			<div class="container clearfix">
-				<h1 class="azul"><i class="icon-database"></i> BASE MAESTRA</h2><br>
-				<ol class="breadcrumb">
-					<button class="button button-large button-circle button-3d download-btn" style="background-color: #016d3d !important; color: white;"><i class="icon-download1"></i> Descargar Excel <i class="icon-file-excel"></i></button>
-				</ol>
+				<h2 class="azul"><i class="icon-database"></i> BASE MAESTRA</h2>
 			</div>
 		</section><!-- #page-title end -->
 
@@ -182,14 +179,6 @@
 															<option value="NA">NA</option>
 															<option value="NB">NB</option>
 														</select>
-														<label>Segmento MKT:</label>
-														<select class="selectpicker" name="segmento" id="segmento" multiple>
-															<option value="Soñadores">Soñadores</option>
-															<option value="Rebeldes">Rebeldes</option>
-															<option value="Sabios">Sabios</option>
-															<option value="Amigos">Amigos</option>
-															<option value="Otros">Otros</option>
-														</select>
 														<label>Estatus COD:</label>
 														<select class="selectpicker" name="estatus_cod" id="estatus_cod" multiple>
 															<option value="Activa">Activa</option>
@@ -292,13 +281,12 @@
 														</select>
 														<label>Industria:</label>
 														<select class="selectpicker" name="industria" id="industria" multiple>
-															<option value="fabricante">Fabricante</option>
-															<option value="moda">Moda</option>
-															<option value="salud">Salud</option>
-															<option value="financiero">Financiero</option>
-															<option value="alimentos">Alimentos Fresco/Agro</option>
-															<option value="retail">Retail</option>
-															<option value="cadena">Cadena de suministro</option>
+															<option value="Fabricante">Fabricante</option>
+															<option value="Moda">Moda</option>
+															<option value="Salud">Salud</option>
+															<option value="Financiero">Financiero</option>
+															<option value="Alimentos Frescos / Agro">Alimentos Frescos/Agro</option>
+															<option value="Retail">Retail</option>
 														</select>
 														<label>Estatus LEI:</label>
 														<select class="selectpicker" name="estatus_l" id="estatus_l" multiple>
@@ -338,6 +326,17 @@
 				</form>
 			</div>
 		</section>
+		<div id="contenedor-datos">
+			<% if (resultados && resultados.length > 0) { %>
+				<ul>
+					<% resultados.forEach(function(resultado, index) { %>
+						<li><b style="padding-left: 500px; color: #F26335;">Total de Registros: </b><b><%= resultado[0] %></b></li>
+					<% }); %>
+				</ul>
+			<% } else { %>
+				<p>No se encontraron datos</p>
+			<% } %>
+		</div>
 		<section id="tablas" >
 			<div class="container clearfix">
 				
@@ -382,31 +381,36 @@
 										<th>Razon social</th>
 										<th>Ramo industrial</th>
 										<th>Nivel</th>
-										<th>Moda</th>
-										<th>Salud</th>
-										<th>Alimentos</th>
-										<th>Financiero</th>
-										<th>Retail</th>
-										<th>Fabricante</th>
-										<th>Cadena</th>
+										<th>Industria</th>
 										<th>Catalogo</th>
 										<th>Estandar</th>
 										<th>LEI</th>
 										<th>Estatus general</th>
-										<th>Segmento mkt</th>
 										<th>Tamaño mkt</th>
 										<th>Estatus Mensual</th>
 									</tr>
 								</thead>
-								<tbody id="datatable12">
+								<tbody id="datatable1">
 								</tbody>
 							</table>
 						</div>
-						<!-- <div class="center" >
-							<button id="anterior" class="button button-large button-circle button-3d botonAgregar" style="background-color: #F26335 !important; color: white;" disabled="true"> Anterior </button>
-							<button id="siguiente" class="button button-large button-circle button-3d botonAgregar" style="background-color: #F26335 !important; color: white;" disabled="true"> Siguiente </button>
-						</div>  -->
-							<br><br>
+						<div class="col-lg-12 d-flex mt-5 p-0">
+							<div class="col-lg-6">
+								<div class="btn-group ps-3">
+									<button id="generar-btn" class="button button-large button-circle button-3d submit_btn" style="background-color: #F26335 !important; color: white;">
+										GENERAR REPORTE
+									</button>
+								</div>
+							</div>
+							<div class="col-lg-6 text-end" id="descargar-btn-container" style="display: none;"> 
+								<span>El archivo está listo para la descarga.</span>
+								<div class="btn-group ps-3">
+									<button id="descargar-btn" class="button button-large button-circle button-3d download-btn" style="background-color: #016d3d !important; color: white;"><i class="icon-download1"></i> Descargar <i class="icon-file-excel"></i></button>
+								</div>
+							</div>
+
+						</div>
+						<br>
 					</div>
 				</div>
 			</div>
@@ -442,148 +446,9 @@
 	<script src="js/functions.js"></script>
 
 	<script src="js/xlsx.full.min.js"></script>
-	<script>
-	// Muestra el preloader antes de inicializar el DataTable
-	const preloader = $('#preloader');
-	preloader.show();
-	//Carga los datos de la pagina en la url para pintar la consulta en la tabla
-	$(document).ready(function () {
-		$('#datatable1').dataTable({
-			ajax: {
-				url: "/data",
-				dataSrc:"",
-			},
-			initComplete: function () {
-            // Oculta el preloader una vez que se haya completado la carga inicial
-            preloader.hide();
-        }
-		});
-	});
-
-	$('.submit_btn').on('click', function (e) {
-  		e.preventDefault();
-		//contactos
-  		const selectedarea = Array.from($('#area option:checked')).map(option => option.value);
-		const selectedpuesto = Array.from($('#puesto option:checked')).map(option => option.value);
-		const selectedEstado = Array.from($('#estado_c option:checked')).map(option => option.value);
-		//empresas
-		const selectedSector = Array.from(jQuery('#sector option:checked')).map(option => option.value);
-		const selectedRamos = Array.from(jQuery('#ramo_i option:checked')).map(option => option.value);
-		const selectedSegmento = Array.from(jQuery('#segmento option:checked')).map(option => option.value);
-		const selectedEstatusC = Array.from(jQuery('#estatus_cod option:checked')).map(option => option.value);
-		const selectedEstatusM = Array.from(jQuery('#estatus_men option:checked')).map(option => option.value);
-		const selectedGiros = Array.from(jQuery('#giro option:checked')).map(option => option.value);
-		const selectedEntidad = Array.from(jQuery('#entidad_f option:checked')).map(option => option.value);
-		const selectedTamanio = Array.from(jQuery('#tamano option:checked')).map(option => option.value);
-		const selectedEstatusG = Array.from(jQuery('#estatus_g option:checked')).map(option => option.value);
-		const selectedEstatusCat = Array.from(jQuery('#estatus_cat option:checked')).map(option => option.value);
-		const selectedregionN = Array.from(jQuery('#region option:checked')).map(option => option.value);
-		const selectedEstatusLei = Array.from(jQuery('#estatus_l option:checked')).map(option => option.value);
-		const selectedNivel = Array.from(jQuery('#nivel option:checked')).map(option => option.value);
-		const selectedIndustria = Array.from(jQuery('#industria option:checked')).map(option => option.value);
-
-		// Construir la URL de la solicitud AJAX con los filtros si están presentes
-		let uri = '/data';
-	  	const queryParams = [];
-
-		if (selectedarea.length > 0) {
-			queryParams.push(`area=${selectedarea.join(',')}`);
-		}
-		if (selectedpuesto.length > 0) {
-			queryParams.push(`puesto=${selectedpuesto.join(',')}`);
-		}
-		if (selectedEstado.length > 0) {
-			queryParams.push(`estado_c=${selectedEstado.join(',')}`);
-		}
-		if (selectedSector.length > 0) {
-    		queryParams.push(`sector=${selectedSector.join(',')}`);
-  		}
-		if (selectedRamos.length > 0) {
-    		queryParams.push(`ramo_i=${selectedRamos.join(',')}`);
-  		}
-		if (selectedSegmento.length > 0) {
-    		queryParams.push(`segmento=${selectedSegmento.join(',')}`);
-  		}
-		if (selectedEstatusC.length > 0) {
-    		queryParams.push(`estatus_cod=${selectedEstatusC.join(',')}`);
-  		}
-		if (selectedEstatusM.length > 0) {
-    		queryParams.push(`estatus_men=${selectedEstatusM.join(',')}`);
-  		}
-		if (selectedGiros.length > 0) {
-    		queryParams.push(`giro=${selectedGiros.join(',')}`);
-  		}
-		if (selectedEntidad.length > 0) {
-    		queryParams.push(`entidad_f=${selectedEntidad.join(',')}`);
-  		}
-		if (selectedTamanio.length > 0) {
-			queryParams.push(`tamano=${selectedTamanio.join(',')}`);
-		}
-		if (selectedEstatusG.length > 0) {
-			queryParams.push(`estatus_g=${selectedEstatusG.join(',')}`);
-		}
-		if (selectedEstatusCat.length > 0) {
-			queryParams.push(`estatus_cat=${selectedEstatusCat.join(',')}`);
-		}
-		if (selectedregionN.length > 0) {
-			queryParams.push(`region=${selectedregionN.join(',')}`);
-		}
-		if (selectedEstatusLei.length > 0) {
-			queryParams.push(`estatus_l=${selectedEstatusLei.join(',')}`);
-		}
-		if (selectedNivel.length > 0){
-			queryParams.push(`nivel=${selectedNivel.join(',')}`)
-		}
-		if (selectedIndustria.length > 0){
-			queryParams.push(`industria=${selectedIndustria.join(',')}`)
-		}
-		if (queryParams.length > 0) {
-			uri += `?${queryParams.join('&')}`;
-		}
-
-		console.log(uri); // Añade esta línea para verificar la URL
-		// Antes de realizar la solicitud AJAX, muestra el preloader
-		const preloader = $('#preloader');
-		preloader.show();
-		// Realizar la solicitud AJAX
-		fetch(uri)
-		.then(result => result.json())
-		.then(rs => {
-			// Oculta el preloader una vez que se haya completado la solicitud
-			preloader.hide();
-			$('#datatable1').DataTable().clear().rows.add(rs).draw();
-		})
-		.catch(error => {
-		// En caso de error, también se ocultara el preloader
-		preloader.hide();
-		console.log("Error: ", error)
-		});
-	})
-
-	$('.download-btn').on('click', function (e) {
-		e.preventDefault();
-		const headers = ['numero_asociado','Nombre','A_Paterno','A_Materno','num_contacto','correo_contacto','puesto','area','estado','num_telefono','titulo','region_nielsen','entidad_federativa','colonia','municipio','direccion','sector','giro','razon_social','ramo_industrial','nivel','moda','salud','alimentos','financiero','retail','fabricante','cadena','catalogo','estandar','lei','bk_contactostatus','segmento','tamanio','estatus_mes'];
-		// Obtén los datos de la tabla DataTable
-		const table = $('#datatable1').DataTable();
-		const data = table.data().toArray();
-
-		const excelData = [headers, ...data];
-
-		// Crea un libro de Excel y una hoja de trabajo
-		const wb = XLSX.utils.book_new();
-		const ws = XLSX.utils.aoa_to_sheet(excelData);
-
-		// Agrega la hoja de trabajo al libro de Excel
-		XLSX.utils.book_append_sheet(wb, ws, 'Datos');
-
-		// Genera el archivo Excel y descárgalo
-		XLSX.writeFile(wb, 'BaseMaestra.xlsx');
-	});
-
-	</script>
 	
-	<script>
-		$('.selectsplitter').selectsplitter();
-	</script>
+	<script src="js/bm/datatable.js"></script>
+	<script src="js/bm/descargar.js"></script>
+	<script src="js/bm/conteo.js"></script>
 </body>
 </html>

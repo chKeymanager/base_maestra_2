@@ -1,70 +1,82 @@
 const { response } = require('express');
-const conn = require('../controllers/db');
+const pool = require('../config/db');
+
 /* Usuarios*/
-exports.Usuarios = async(req, res) => {
-    const [usuarios] = await conn.query("select id,nombre,username,rol,password from usuarios")
-    const data = []
-
-    if(usuarios.length > 0) {
-        for( const i in usuarios ) {
-            data.push([
-                usuarios[i]['nombre'],
-                usuarios[i]['username'],
-                usuarios[i]['rol'],
-                Buffer.from(usuarios[i]['password'],'base64').toString('utf-8'),
-                `<a  class="button button-3d button-mini button-rounded modal-id-act-u" data-bs-toggle="modal" data-bs-target="#usuarioEditar" style="background-color: #EF7C10;" idux="${usuarios[i]['id']}" actax="${usuarios[i]['nombre']}" idusx="${usuarios[i]['username']}" llux="${usuarios[i]['rol']}" coux="${Buffer.from(usuarios[i]['password'],'base64').toString('utf-8')}" >Editar</a>
-                <a  class="button button-3d button-mini button-rounded delete" data-idx="${usuarios[i]['id']}" style="background-color: rgba(255, 0, 0, 0.514); color: white;">Borrar</a>`
-            ])
+Usuarios = async(req, res) => {
+    const sql = ("select id,nombre,username,rol,password from usuarios");
+    pool.query(sql,(error, rows, fileds) => {
+        if(!error){
+        const array1 = []
+        for(const i in rows){
+            array1.push([
+                rows[i]['nombre'],
+                rows[i]['username'],
+                rows[i]['rol'],
+                Buffer.from(rows[i]['password'],'base64').toString('utf-8'),
+                `<a  class="button button-3d button-mini button-rounded modal-id-act-u" data-bs-toggle="modal" data-bs-target="#usuarioEditar" style="background-color: #EF7C10;" idux="${rows[i]['id']}" actax="${rows[i]['nombre']}" idusx="${rows[i]['username']}" llux="${rows[i]['rol']}" coux="${Buffer.from(rows[i]['password'],'base64').toString('utf-8')}" >Editar</a>
+                <a  class="button button-3d button-mini button-rounded delete" data-idx="${rows[i]['id']}" style="background-color: rgba(255, 0, 0, 0.514); color: white;">Borrar</a>`
+            ]);
         }
-    }
-
-    res.send(data)
+        res.send(array1);
+        }else
+        console.log(error)
+    });
 }
-exports.RegistrarU = async (req, res) =>{
+RegistrarU = async (req, res) =>{
     const nombre = req.body.nombre;
     const usuario = req.body.usuario;
     const roll = req.body.rol;
     const pass = Buffer.from(req.body.pass,'utf-8').toString('base64')
-    const [row] = await conn.query("INSERT INTO usuarios(nombre,username,rol,password) VALUES (?,?,?,?)", [nombre, usuario, roll, pass])
-    console.log("Inserta datos: ", row, row['affectedRows'])
-    const status = row['affectedRows'] > 0
-
-    res.send({
-        status: status
-    })
+    const sql = (`INSERT INTO usuarios(nombre,username,rol,password) VALUES ("${nombre}","${usuario}","${roll}","${pass}")`);
+    pool.query(sql,(error,result) => {
+        if (error) {
+            res.send({
+                status: false
+            });
+        }else{
+            res.send({
+                status: true
+            });
+        }
+    });
 }
-exports.ActualizarU = async (req, res) =>{
-    const [row] = await conn.query("UPDATE usuarios SET nombre = ?, username = ?, rol = ?, password = ? WHERE id = ?", [nombre, usuario, roll, pass])
-    const status = row['affectedRows'] > 0
-    
-    res.send({
-        status: status
-    })
+ActualizarU = async (req, res) =>{
+    const id = req.body.id;
+    const nombre = req.body.nombre;
+    const usuario = req.body.usuario;
+    const roll = req.body.rol;
+    //console.log(id,nombre,usuario,roll)
+    const pass = Buffer.from(req.body.pass,'utf-8').toString('base64')
+    const sql = (`UPDATE usuarios SET nombre = "${nombre}", username = "${usuario}", rol = "${roll}", password = "${pass}" WHERE id = "${id}";`)
+    pool.query(sql,(error,result) => {
+        if (error) {
+            res.send({
+                status: false
+            });
+        }else{
+            res.send({
+                status: true
+            });
+        }
+    });
 }
-exports.EliminarU = async (req, res) =>{
+EliminarU = async (req, res) =>{
     const {action} = req.body
     if (action == 'delete') {
         const id = req.body.idux;
-        const [row] = await conn.query("DELETE FROM usuarios WHERE id = ?", [id])
-        const status = row['affectedRows'] > 0
-
-        if(status) {
-            res.send({
-                'mensaje': 'Usuario Eliminado '
-            })
-        } else {
-            res.send({
-                'mensaje': 'Ocurrio un error al elimnar el usuario'
-            })
-        }
+        const sql = (`DELETE FROM usuarios WHERE id = "${id}";`);
+        pool.query(sql,(error,result) => {
+            if (error){
+                res.send({
+                    'mensaje': 'Ocurrio un error al elimnar el usuario'
+                })
+            }else{
+                res.send({
+                    'mensaje': 'Usuario Eliminado '
+                });
+            }
+        });
     }
 }
-/*Usuarios */
 
-
-
-
-
-
-
-
+module.exports = {Usuarios,RegistrarU,ActualizarU,EliminarU}
