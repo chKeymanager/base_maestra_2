@@ -5,4 +5,77 @@
 	Overwriting Default Theme Styles for Better Handling Updates
 -----------------------------------------------------------------*/
 
+/* Base Maestra */
+/* Oculta el botón de 'Next' y los tres puntos (...) en la paginación */
+.dataTables_wrapper .dataTables_paginate .paginate_button.next{ display: none !important; }
+#datatable1_ellipsis { display: none !important; }
+/* End Base Maestra */
 
+/*Loading*/
+/* From Uiverse.io by satyamchaudharydev */ 
+.loading {
+	--speed-of-animation: 0.9s;
+	--gap: 6px;
+	--first-color: #4c86f9;
+	--second-color: #49a84c;
+	--third-color: #f6bb02;
+	--fourth-color: #f6bb02;
+	--fifth-color: #2196f3;
+	display: flex;
+	justify-content: left;
+	align-items: center;
+	width: 100px;
+	gap: 6px;
+	height: 100px;
+}
+
+.loading span {
+	width: 4px;
+	height: 50px;
+	background: var(--first-color);
+	animation: scale var(--speed-of-animation) ease-in-out infinite;
+}
+
+.loading span:nth-child(2) {
+	background: var(--second-color);
+	animation-delay: -0.8s;
+}
+
+.loading span:nth-child(3) {
+	background: var(--third-color);
+	animation-delay: -0.7s;
+}
+
+.loading span:nth-child(4) {
+	background: var(--fourth-color);
+	animation-delay: -0.6s;
+}
+
+.loading span:nth-child(5) {
+	background: var(--fifth-color);
+	animation-delay: -0.5s;
+}
+  
+@keyframes scale {
+	0%, 40%, 100% {
+		transform: scaleY(0.05);
+	}
+
+	20% {
+		transform: scaleY(1);
+	}
+}
+/*END Loading*/
+@media (min-width: 1200px) { 
+	/*Estilos para Laptos*/
+	/*.total_registros{ padding-left: 100px; font-size: 30px; }*/
+}
+
+@media (min-width: 1800px) { 
+	/*Estilos para pantallas grandes*/
+	/*.total_registros{ text-align: center; font-size: 40px; }*/
+}
+
+@media (min-width: 1400px){
+	.container-xxl, .container-xl, .container-lg, .container-md, .container-sm, .container { max-width: 1800px !important; }
+}

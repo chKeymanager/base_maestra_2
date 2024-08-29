@@ -330,7 +330,7 @@
 			<% if (resultados && resultados.length > 0) { %>
 				<ul>
 					<% resultados.forEach(function(resultado, index) { %>
-						<li><b style="padding-left: 500px; color: #F26335;">Total de Registros: </b><b><%= resultado[0] %></b></li>
+						<li class="text-center fs-2"><b style="color: #F26335;">Total de Registros: </b><b><%= resultado[0] %></b></li>
 					<% }); %>
 				</ul>
 			<% } else { %>
@@ -450,5 +450,25 @@
 	<script src="js/bm/datatable.js"></script>
 	<script src="js/bm/descargar.js"></script>
 	<script src="js/bm/conteo.js"></script>
+
+	<script>
+		document.getElementById('generar-btn').addEventListener('click', function() {
+			const btn = this;
+
+			// Desactivar el botón
+			btn.disabled = true;
+			btn.classList.add('loading');
+
+			// Añadir el spinner y el texto
+			btn.innerHTML = '<div class="loading"><span></span><span></span><span></span><span></span><span></span></div>';
+
+			// Simulación de proceso (puedes eliminar esto)
+			setTimeout(function() {
+				btn.disabled = false;
+				btn.classList.remove('loading');
+				btn.innerHTML = 'GENERAR REPORTE';
+			}, 35000); // Cambia el tiempo según la duración del proceso real
+		});
+	</script>
 </body>
 </html>

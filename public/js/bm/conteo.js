@@ -95,7 +95,7 @@ $(document).ready(function() {
             if (rs.length > 0) {
                 let ul = $('<ul></ul>');
                 rs.forEach(function(resultado) {
-                    ul.append(`<li><b style="padding-left: 500px; color: #F26335;">Total de Registros: </b><b>${resultado[0]}</b></li>`);
+                    ul.append(`<li class="text-center fs-2"><b style="color: #F26335;">Total de Registros: </b><b>${resultado[0]}</b></li>`);
                 });
                 $('#contenedor-datos').append(ul);
             } else {
