@@ -1,10 +1,11 @@
 const query = (req, res) => {
 
-    const {draw, start, length} = req.query
-    // Paginador
-    const page = draw || 1; // Página actual (por defecto: 1)
-    const itemsPerPage = length || 150000; // Número de elementos por página, ahora configurable desde el cliente
-    const offset = (page - 1) * itemsPerPage; // Calcular el índice de inicio
+    const { start, length } = req.query;
+
+    // Paginador actualizado
+    const offset = start ? parseInt(start) : 0; // Índice de inicio
+    const itemsPerPage = length ? parseInt(length) : 10; // Elementos por página
+
 
     // Inicio de los filtros de contactos
     const selectedArea = req.query.area ? req.query.area.split(',') : []; // Convertir las opciones seleccionadas en un array
