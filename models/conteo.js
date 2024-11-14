@@ -53,7 +53,7 @@ const query_c = (req, res) => {
         queryParams.push(` (${estatus_cFilter})`);
     }
     if (estatus_m.length > 0) {
-        const estatus_mFilter = estatus_m.map(estatus_men => `estatus_mes = '${estatus_m}'`).join(' OR ');
+        const estatus_mFilter = estatus_m.map(estatus_men => `estatus_mes = '${estatus_men}'`).join(' OR ');
         queryParams.push(` (${estatus_mFilter})`);
     }
     if (selectedGiros.length > 0) {
