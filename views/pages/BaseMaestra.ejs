@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <%- include ('../partials/head'); %>
+    <link rel="stylesheet" href="css/tabla.css">
+    <title>Administración de Usuarios</title>
+    <script>
+		window.onpageshow = function(){
+			fetch('/validar')
+			.then(result => result.json())
+			.then(rs => {
+				var usuario = rs.usuario
+				if(!usuario){
+					window.location=`/`
+				}else{
+					document.getElementById('UserLogin').textContent = usuario;
+				}
+			}) 
+			.catch(error => {
+				console.log("Error: ", error)
+			})
+		}
+	</script>
+
+</head>
+<body class="stretched">
+    <div id=" main-content">
+
+        <%- include ('../partials/header'); %>
+        
+        <%- include ('../partials/bm/tituloBM'); %>
+        <%- include ('../partials/bm/filtros'); %>
+        <%- include ('../partials/bm/tabla'); %>
+        
+        
+    </div>
+        <%- include ('../partials/footer'); %>
+        <%- include ('../partials/scripts'); %>
+        <%- include ('../partials/bm/scripts_f'); %>
+</body>
+
+
+</html>

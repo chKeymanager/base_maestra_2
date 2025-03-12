@@ -1,4 +1,3 @@
-const { response } = require('express');
 const pool = require('../config/db');
 
 /* Usuarios*/
@@ -13,8 +12,8 @@ Usuarios = async(req, res) => {
                 rows[i]['username'],
                 rows[i]['rol'],
                 Buffer.from(rows[i]['password'],'base64').toString('utf-8'),
-                `<a  class="button button-3d button-mini button-rounded modal-id-act-u" data-bs-toggle="modal" data-bs-target="#usuarioEditar" style="background-color: #EF7C10;" idux="${rows[i]['id']}" actax="${rows[i]['nombre']}" idusx="${rows[i]['username']}" llux="${rows[i]['rol']}" coux="${Buffer.from(rows[i]['password'],'base64').toString('utf-8')}" >Editar</a>
-                <a  class="button button-3d button-mini button-rounded delete" data-idx="${rows[i]['id']}" style="background-color: rgba(255, 0, 0, 0.514); color: white;">Borrar</a>`
+                `<a  class="boton_A modal-id-act-u" data-bs-toggle="modal" data-bs-target="#usuarioEditar" style="background-color: #EF7C10;" idux="${rows[i]['id']}" actax="${rows[i]['nombre']}" idusx="${rows[i]['username']}" llux="${rows[i]['rol']}" coux="${Buffer.from(rows[i]['password'],'base64').toString('utf-8')}" >Editar</a>
+                <a  class="boton_E delete" data-idx="${rows[i]['id']}" style="background-color: rgba(255, 0, 0, 0.514); color: white;">Borrar</a>`
             ]);
         }
         res.send(array1);

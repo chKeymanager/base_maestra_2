@@ -1,8 +1,5 @@
 const conn = require('../config/db');
-const express = require('express');
 const Buffer = require('buffer').Buffer;
-
-const router = express.Router()
 
 
 exports.LoginUsuarios = (req, res) => {
@@ -20,6 +17,7 @@ exports.LoginUsuarios = (req, res) => {
             req.session.usuario = result[0].username;
             req.session.nombre = result[0].nombre;
             req.session.rol = result[0].rol;
+            req.session.date_update = result[0].date_update;
 
             return res.redirect('/home');
         } else {

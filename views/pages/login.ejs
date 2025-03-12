@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="css/bootstrap.css">
+    <link rel="stylesheet" href="css/style_login.css">
+    <link rel="stylesheet" href="css/font/bootstrap-icons.min.css">
+    <link rel="shortcut icon" type="image/x-icon" href="images/favicon-16x16.png">
+    <link rel="shortcut icon" type="image/x-icon" href="images/favicon-32x32.png">
+    <title>Acceso Almacén  - Bienes</title>
+</head>
+<body class="bg-gs1">
+    <div class="container">
+        <div class="form-container">
+            <img src="images/logo_ini.png" class="logo">
+            <div class="login-container">
+                <h1>Login - Base Maestra</h1>
+                <form id="login-form" name="login-form" class="mb-0 row" action="/login" method="post">
+                    <div class="mb-space input-group">
+                        <span class="input-group-text icon"><i class="bi bi-person-circle"></i></span>
+                        <input type="text" class="form-control" placeholder="Ingrese Usuario" aria-label="Usuario" id="usuario" name="usuario" value="" required>
+                    </div>
+                    <div class="mb-space input-group">
+                        <span class="input-group-text icon"><i class="bi bi-shield-shaded"></i></span>
+                        <input type="password" class="form-control" placeholder="Ingrese Contraseña" aria-label="Contraseña" id="contra" name="contra" value="" required>
+                    </div>
+                    <button class="btn-primary button-rounded form-control input-group" id="login-form-submit" name="login-form-submit" value="Ingresar" style="cursor:pointer; display: flex; align-items: center; justify-content: center;">Ingesar</button>
+                </form>
+            </div>     
+        </div>
+        <div class="text-center dark mt-3"><small style="color: white;">Copyrights © All Rights Reserved by GS1 México.</small></div>
+    </div>
+    <script src="js/bootstrap.js"></script>
+</body>
+</html>

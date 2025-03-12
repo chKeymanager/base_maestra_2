@@ -1,0 +1,38 @@
+html, body {
+    height: 100%;
+    margin: 0;
+    display: grid;
+    grid-template-rows: 1fr auto; /* Hace que el contenido ocupe el espacio disponible y el footer se mantenga abajo */
+    width:auto
+}
+
+/* Contenedor principal para empujar el footer hacia abajo */
+.main-content {
+    flex: 1; /* Hace que este contenedor ocupe el espacio disponible */
+}
+
+.center {
+    text-align: center !important;
+  }
+
+/* elemento a como boton */
+.boton {
+    background-color: #F26335 !important; 
+    color: white; 
+    text-decoration: none; 
+    padding: 10px 15px; 
+    display: inline-block; 
+    text-align: center;
+    border-radius: 23px;
+}
+
+/* elemento a como boton */
+.boton_D {
+    background-color: #016d3d !important; 
+    color: white; 
+    text-decoration: none; 
+    padding: 10px 15px; 
+    display: inline-block; 
+    text-align: center;
+    border-radius: 23px;
+}

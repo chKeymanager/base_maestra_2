@@ -1,0 +1,156 @@
+/* Estilo general para el contenedor de todo */
+.content-wrap {
+    display: flex;
+    justify-content: space-between; /* Distribuye los elementos a los lados */
+    align-items: flex-start;
+    width: 100%; /* Asegura que ocupe todo el ancho */
+    padding: 0 60px; /* 60px de padding a los lados */
+    box-sizing: border-box; /* Asegura que el padding no sobrepase el tamaño */
+}
+
+/* Elemento individual de la sección */
+.item {
+    display: flex;
+    flex-direction: column; /* Acomoda los elementos en columna */
+    align-items: flex-start; /* Alinea los elementos a la izquierda por defecto */
+    width: 100%; /* Asegura que ocupe todo el ancho disponible */
+}
+
+/* Alinea el título a la derecha */
+.content-wrap h3 {
+    text-align: right; /* Alinea el título a la derecha */
+    margin: 0 10px;
+}
+
+/* Estilo del switch */
+.switch {
+    position: relative;
+    display: inline-block;
+    width: 60px;
+    height: 30px;
+}
+
+.switch input {
+    opacity: 0;
+    width: 0;
+    height: 0;
+}
+
+.slider {
+    position: absolute;
+    cursor: pointer;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: #01276e;
+    transition: .4s;
+    border-radius: 34px;
+}
+
+.slider:before {
+    position: absolute;
+    content: "";
+    height: 22px;
+    width: 22px;
+    left: 4px;
+    bottom: 4px;
+    background-color: #FF632D;
+    transition: .4s;
+    border-radius: 50%;
+}
+
+input:checked + .slider {
+    background-color: #FF632D;
+}
+
+input:checked + .slider:before {
+    transform: translateX(30px);
+    background-color: #01276e;
+}
+
+/* Caja que envuelve los switches */
+.switch-box {
+    background-color: rgba(255, 255, 255, 0.1); /* Fondo transparente */
+    padding: 10px;
+    border-radius: 10px;
+    box-shadow: 0 2px 5px rgba(255, 255, 255, 0.1); /* Sombra suave */
+    display: flex;
+    flex-direction: column; /* Apilar los elementos en columna */
+    justify-content: flex-start; /* Alinea los elementos al principio */
+    width: 100%; /* Hace que ocupe todo el ancho */
+}
+
+/* Ajuste específico para el filtro de Empresas */
+.item:nth-child(2) {
+    display: flex;
+    justify-content: flex-end; /* Alinea el contenedor de Empresas hacia la derecha */
+    flex-direction: column; /* Asegura que el switch y el filtro estén uno debajo del otro */
+    align-items: flex-end; /* Alinea todo al final (derecha) */
+}
+
+.item:nth-child(2) .switch-box {
+    align-items: flex-end; /* Alinea el switch de Empresas hacia la derecha */
+    text-align: right; /* Alinea el texto también */
+}
+
+/* Ajuste de la caja de filtros para empresas */
+#filtros-empresas {
+    align-self: flex-end; /* Alinea el filtro a la derecha */
+}
+
+.filtros-empresas {
+    width: 100%; /* O un ancho mayor, por ejemplo, 400px */
+    min-height: 200px; /* Ajusta la altura según sea necesario */
+    overflow-y: auto; /* Permite desplazamiento si los filtros son muchos */
+    max-width: 100%; /* Para evitar que se extiendan demasiado */
+    white-space: normal; /* Evita que los filtros se mantengan en una sola línea */
+}
+
+
+/* Ajuste para la caja de filtros de contactos */
+#filtros-contactos {
+    align-self: flex-start; /* Alinea el filtro de contactos a la izquierda */
+}
+
+/* Estilo de los filtros */
+.filtros_c {
+    padding: 15px;
+    background: #01276e;
+    border-radius: 10px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    color: #fff;
+    display: none; /* Inicia oculto */
+    width: 100%;
+    max-width: 300px; /* Ajuste de tamaño máximo para los filtros */
+}
+
+.filtros_e {
+    padding: 15px;
+    background: #01276e;
+    border-radius: 10px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    color: #fff;
+    display: none;
+    width: 100%;
+    max-width: 860px;
+    text-align: justify;
+}
+
+.spbs {
+    padding-right: 10px;
+}
+
+.bootstrap-select:not([class*=col-]):not([class*=form-control]):not(.input-group-btn) {
+    width: 270px !important;
+}
+
+.bsb {
+    border: none; /* Elimina el borde */
+    outline: none; /* Evita el borde al hacer clic en algunos navegadores */
+}
+
+ul {
+    list-style: none !important;
+    padding-left: 0 !important;
+}

@@ -1,20 +1,18 @@
-
 <!DOCTYPE html>
-<html dir="ltr" lang="en-US">
+<html lang="en">
 <head>
-    <%- include('../partials/head'); %>
-	<!-- Document Title
-	============================================= -->
-	<title>HOME GS1</title>
-	<script>
+    <%- include ('../partials/head'); %>
+    <title>Home - Base Maestra</title>
+    <script>
 		window.onpageshow = function(){
 			fetch('/validar')
 			.then(result => result.json())
 			.then(rs => {
-				console.log(rs)
 				var usuario = rs.usuario
 				if(!usuario){
 					window.location=`/`
+				}else{
+					document.getElementById('UserLogin').textContent = usuario;
 				}
 			}) 
 			.catch(error => {
@@ -22,55 +20,19 @@
 			})
 		}
 	</script>
-
 </head>
-
 <body class="stretched">
+    <div id=" main-content">
 
-	<!-- Document Wrapper
-	============================================= -->
-	<div id="wrapper" class="clearfix">
-
-		<!-- Top Bar
-		============================================= -->
-		<!-- #top-bar end -->
-
-		<!-- Header
-		============================================= -->
-        <%- include('../partials/header'); %>
-		<!-- #header end -->
+        <%- include ('../partials/header'); %>
         
-		<!-- Page Title
-		============================================= -->
-		<section id="page-title">
-
-			<div class="container clearfix center">
-                <h1 class="azul">Bienvenidos</h2>
-			</div>
-
-		</section><!-- #page-title end -->
-
-		<!-- Content
-		============================================= -->
-		<section id="content">
-			<div class="content-wrap">
-				<div class="container clearfix center">
-
-					<img src="/images/logoga.png" alt="">
-					<div style="margin-top: 15% !important;"></div>
-				</div>
-			</div>
-		</section><!-- #content end -->
-        <!-- #content end -->
-
-		<!-- Footer
-		============================================= -->
-        <%- include('../partials/footer'); %>
-        <!-- #footer end -->
-
-	</div><!-- #wrapper end -->
-
-	
-
+        <%- include ('../partials/info_section'); %>
+        
+        
+    </div>
+        <%- include ('../partials/footer'); %>
+        <%- include ('../partials/scripts'); %>
 </body>
+
+
 </html>

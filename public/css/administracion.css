@@ -1,0 +1,44 @@
+.admin-t {
+    display: flex; 
+    justify-content: flex-start; 
+    align-items: center; 
+    padding-left: 60px;
+    padding-top: 60px;
+    color: #01276e;
+}
+
+.admin-button {
+    display: flex; 
+    justify-content: flex-end; 
+    padding-right: 60px;
+}
+
+.admin-linea {
+    margin-left: 60px; 
+    margin-right: 60px; 
+    width: auto;
+}
+
+/* elemento a como boton */
+.boton_A {
+    background-color: #F26335 !important; 
+    color: white; 
+    text-decoration: none; 
+    padding: 5px 10px; 
+    display: inline-block; 
+    border-radius: 5px; 
+    text-align: center;
+    cursor: pointer;
+}
+
+/* elemento a como boton */
+.boton_E {
+    background-color: #f80703 !important; 
+    color: white; 
+    text-decoration: none; 
+    padding: 5px 10px; 
+    display: inline-block; 
+    border-radius: 5px; 
+    text-align: center;
+    cursor: pointer;
+}

@@ -23,7 +23,7 @@ const query_c = (req, res) => {
     const queryParams = [];
 
     // Consulta base
-    let sqlQuery = "SELECT count(numero_asociado) as total FROM bm";
+    let sqlQuery = "SELECT count(numero_asociado) as total FROM bm_pruebas";
 
     // Filtros de contactos
     if (selectedArea.length > 0) {

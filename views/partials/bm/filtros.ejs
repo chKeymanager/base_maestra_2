@@ -1,0 +1,64 @@
+<section id="content">
+    <div class="content-wrap">
+        <div class="item">
+            <h3>CONTACTOS:</h3>
+            <div class="switch-box">
+                <div class="switch-container">
+                    <label class="switch">
+                        <input type="checkbox" id="switch-contactos">
+                        <span class="slider"></span>
+                    </label>
+                </div>
+                <div id="filtros-contactos" class="filtros_c" style="display: none;">
+                    <%- include('filtros-contactos') %>
+                </div>
+            </div>
+        </div>
+
+        <div class="item">
+            <h3>EMPRESAS:</h3>
+            <div class="switch-box">
+                <div class="switch-container">
+                    <label class="switch">
+                        <input type="checkbox" id="switch-empresas">
+                        <span class="slider"></span>
+                    </label>
+                </div>
+                <div id="filtros-empresas" class="filtros_e" style="display: none;">
+                    <%- include('filtros-empresas') %>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="center" >
+        <button id="submit" class="boton bsb submit_btn"><i class="bi bi-search"></i> Consultar Tabla <i class="bi bi-table"></i> </button>
+    </div> 
+</section>
+<br>
+<div id="contenedor-datos">
+    <% if (resultados && resultados.length > 0) { %>
+        <ul>
+            <% resultados.forEach(function(resultado, index) { %>
+                <li class="text-center fs-2 mi-lista"><b style="color: #F26335;">Total de Registros: </b><b><%= resultado[0] %></b></li>
+            <% }); %>
+        </ul>
+    <% } else { %>
+        <p>No se encontraron datos</p>
+    <% } %>
+</div>
+
+
+<script>
+document.getElementById("switch-contactos").addEventListener("change", function() {
+    let filtrosDiv = document.getElementById("filtros-contactos");
+    filtrosDiv.style.display = this.checked ? "block" : "none";
+});
+
+document.getElementById("switch-empresas").addEventListener("change", function() {
+    let filtrosDiv = document.getElementById("filtros-empresas");
+    filtrosDiv.style.display = this.checked ? "block" : "none";
+});
+
+
+</script>
