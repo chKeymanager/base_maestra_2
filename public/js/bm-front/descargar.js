@@ -60,11 +60,11 @@ $(document).ready(function() {
                     // Definir los nombres de las columnas
                     const headerNames = [
                         'Número Asociado', 'Nombre', 'Apellido Paterno', 'Apellido Materno',
-                        'Correo de Contacto', 'Número de Contacto', 'Puesto', 'Área', 'Estado',
+                        'Correo de Contacto', 'Número de Contacto', 'Puesto', 'Área', 'Estado Contacto',
                         'Número de Teléfono', 'Título', 'Entidad Federativa', 'Colonia', 'Municipio',
                         'Dirección', 'Giro', 'Sector', 'Razón Social', 'Región Nielsen',
                         'Ramo Industrial', 'Nivel', 'Industria', 'Catálogo', 'Código', 'LEI',
-                        'Estado de Contacto', 'Tamaño', 'Estatus del Mes'
+                        'Estatus General', 'Tamaño', 'Estatus del Mes'
                     ];
 
                     // Transformar los datos de filas a objetos con propiedades según los encabezados
