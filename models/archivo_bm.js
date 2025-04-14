@@ -25,7 +25,7 @@ const query_bm = (req, res) => {
     const queryParams = [];
 
     // Consulta base
-    let sqlQuery = "SELECT `numero_asociado`, `Nombre`, `A_Paterno`, `A_Materno`,  `correo_contacto`, `num_contacto`, `puesto`, `area`, `estado`, `num_telefono`, `titulo`, `entidad_federativa`, `colonia`, `municipio`, `direccion`, `giro`, `sector`, `razon_social`, `region_nielsen`, `ramo_industrial`, `nivel`, `industria`, `catalogo`, `codigo`, `lei`, `bk_contactoestatus`, `tamano`, `estatus_mes` FROM bm_pruebas";
+    let sqlQuery = "SELECT `numero_asociado`, `Nombre`, `A_Paterno`, `A_Materno`,  `correo_contacto`, `num_contacto`, `puesto`, `area`, `estado`, `num_telefono`, `titulo`, `entidad_federativa`, `colonia`, `municipio`, `direccion`, `giro`, `sector`, `razon_social`, `region_nielsen`, `ramo_industrial`, `nivel`, `industria`, `catalogo`, `codigo`, `lei`, `bk_contactoestatus`, `tamano`, `estatus_mes` FROM bm";
 
     // Filtros de contactos
     if (selectedArea.length > 0) {
